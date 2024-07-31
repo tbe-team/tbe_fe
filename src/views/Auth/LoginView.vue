@@ -29,9 +29,7 @@ const { isPending, isError, error, isSuccess, mutate } = useMutation({
       title: 'Login successful',
       description: 'You have successfully logged in.'
     })
-    setTimeout(() => {
-      router.push({ name: 'Home' })
-    }, 1000)
+    router.push({ name: 'Home' })
   },
   onError: () => {
     toast({

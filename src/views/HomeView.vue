@@ -3,7 +3,7 @@ import HomePage from '@/components/HomePage.vue'
 </script>
 
 <template>
-  <main class="w-full">
+  <main class="flex flex-col w-full">
     <HomePage />
   </main>
 </template>
