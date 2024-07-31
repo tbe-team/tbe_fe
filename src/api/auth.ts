@@ -1,7 +1,6 @@
 import http from '@/utils/http'
 
 export async function login(user: { email: string; password: string }) {
-  console.log(user)
   return await http.post('/auth/login', user)
 }
 
@@ -11,7 +10,6 @@ export async function register(user: {
   first_name: string
   last_name: string
 }) {
-  console.log(user)
   return await http.post('/auth/register', user)
 }
 

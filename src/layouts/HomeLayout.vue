@@ -22,16 +22,32 @@
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <!-- <DropdownMenuLabel>{{ userInfo?.username }}</DropdownMenuLabel> -->
-            <DropdownMenuLabel>Settings</DropdownMenuLabel>
+            <DropdownMenuLabel
+              >{{ userInfo?.last_name }} {{ userInfo?.first_name }}</DropdownMenuLabel
+            >
+            <!-- <DropdownMenuLabel>Settings</DropdownMenuLabel> -->
             <DropdownMenuSeparator />
             <DropdownMenuItem @click="() => $router.push({ name: 'OrganizationSettings' })">
-              Users
+              Dashboard
             </DropdownMenuItem>
-            <!-- <DropdownMenuItem @click="toLogin()">Logout</DropdownMenuItem> -->
-            <DropdownMenuItem class="duration-300 hover:bg-red-50 text-destructive"
-              >Logout</DropdownMenuItem
+            <DropdownMenuItem @click="() => $router.push({ name: 'OrganizationSettings' })">
+              Account Settings
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              class="flex justify-between gap-1"
+              @click="() => $router.push({ name: 'OrganizationSettings' })"
             >
+              Create Team
+              <CirclePlus class="w-3.5 h-3.5 justify-end" />
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <!-- <DropdownMenuItem @click="toLogin()">Logout</DropdownMenuItem> -->
+            <DropdownMenuItem class="text-red-500 duration-300 hover:bg-red-100 bg-red-50">
+              <div class="flex items-center gap-1">
+                <LogOut class="w-3.5 h-3.5 text-red-500" />
+                Logout
+              </div>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </header>
@@ -44,7 +60,7 @@
 
 <script setup lang="ts">
 // import Logo from '@/assets/logo.vue'
-import { Bell, CircleUser } from 'lucide-vue-next'
+import { Bell, CirclePlus, CircleUser, LogOut } from 'lucide-vue-next'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -62,32 +78,36 @@ import Sidebar from '@/components/SidebarComponent.vue'
 import { onMounted } from 'vue'
 
 import { storeToRefs } from 'pinia'
-// import { toLogin } from '@/router'
-// import { getCurrentUser } from '@/api/user'
-// import { useUserStore } from '@/stores'
+import { getCurrentUser } from '@/api/user'
+import { useUserStore } from '@/stores/userStore'
+import { useToast } from '@/components/ui/toast'
 
-// const { setUserInfo } = useUserStore()
-// const { userInfo } = storeToRefs(useUserStore())
+const { setUserInfo } = useUserStore()
+const { toast } = useToast()
+const { userInfo } = storeToRefs(useUserStore())
 
-// const initUserInfo = async () => {
-//   try {
-//     const { data } = await getCurrentUser()
-//     setUserInfo({
-//       id: data.id,
-//       username: data.username,
-//       role: data.role,
-//       enabled: data.enabled,
-//       createdAt: data.created_at
-//     })
-//   } catch (error) {
-//     console.error('Failed to fetch user info', error)
-//     // toast({
-//     //   title: "Failed to fetch user info",
-//     // });
-//   }
-// }
+onMounted(async () => {
+  try {
+    const response = await getCurrentUser()
+    const data = response.data
 
-onMounted(() => {
-  // initUserInfo()
+    const userInfo = {
+      id: data.id,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      email: data.email,
+      role: data.role,
+      created_at: new Date(data.created_at), // Chuyển đổi thành đối tượng Date
+      updated_at: data.updated_at ? new Date(data.updated_at) : null // Xử lý trường hợp có thể là null
+    }
+    setUserInfo(userInfo)
+  } catch (error) {
+    console.error('Failed to fetch user info', error)
+    toast({
+      title: 'Failed to fetch user info',
+      // description: error.message,
+      variant: 'destructive'
+    })
+  }
 })
 </script>

@@ -11,7 +11,8 @@ NProgress.configure({ showSpinner: false, trickleSpeed: 200 })
 
 Object.assign(axios.defaults, {
   baseURL: import.meta.env.VITE_BASE_API_URL,
-  timeout: 10000
+  timeout: 10000,
+  withCredentials: true
 })
 
 axios.interceptors.request.use(

@@ -12,25 +12,26 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { RouterLink } from 'vue-router'
-import { Toaster } from '@/components/ui/toast'
+import { RouterLink, useRouter } from 'vue-router'
 import { useToast } from '@/components/ui/toast/use-toast'
 import { useUserStore } from '@/stores/userStore'
 
 const { toast } = useToast()
+const router = useRouter()
 
 const { isPending, isError, error, isSuccess, mutate } = useMutation({
   mutationFn: (user: { email: string; password: string }) => {
-    console.log('User:', user)
     return login(user)
   },
   onSuccess: (data: any) => {
-    console.log('Data:', data)
     useUserStore().setAccessToken(data.data.access_token)
     toast({
       title: 'Login successful',
       description: 'You have successfully logged in.'
     })
+    setTimeout(() => {
+      router.push({ name: 'Home' })
+    }, 1000)
   },
   onError: () => {
     toast({
@@ -77,7 +78,6 @@ const onSubmit = handleSubmit((values) => {
       alt="login image"
       class="absolute inset-0 object-cover w-full h-full -z-10"
     />
-    <Toaster />
     <div class="flex items-center justify-center">
       <form @submit.prevent="onSubmit">
         <Card class="max-w-sm md:min-w-[400px] md:min-h-[400px] mx-auto border-none">

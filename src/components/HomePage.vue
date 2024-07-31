@@ -1,10 +1,10 @@
 <template>
-  <aside class="fixed inset-y-0 left-0 z-10 flex-col hidden border-r w-80 bg-background lg:flex">
+  <aside class="fixed inset-y-0 left-0 z-10 flex-col hidden border-r w-50 bg-background lg:flex">
     <nav class="grid items-start px-2 text-sm font-medium lg:px-4">
-      <a href="/" class="flex items-center justify-start gap-2 py-5">
-        <Logo class="object-contain w-12 h-8" />
-        <span class="text-lg font-bold">PE Admin</span>
-      </a>
+      <div class="flex items-center justify-start gap-2 py-5">
+        <Hexagon class="w-6 h-6" />
+        <TeamSwitcher />
+      </div>
       <!-- <Button>Click me</Button> -->
       <!-- <template v-for="(section, i) in sections">
           <span
@@ -32,8 +32,6 @@
 </template>
 
 <script setup lang="ts">
-// import Logo from "@/assets/logo.vue";
-// import useMenus from "@/hooks/useMenus";
-import { Button } from '@/components/ui/button'
-// const { sections } = useMenus();
+import TeamSwitcher from '@/views/dashboard/components/TeamSwitcher.vue'
+import { Hexagon } from 'lucide-vue-next'
 </script>

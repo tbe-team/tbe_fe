@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { register } from '@/api/auth'
 import { useRouter } from 'vue-router'
-import { Toaster, useToast } from '@/components/ui/toast'
+import { useToast } from '@/components/ui/toast'
 
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -33,6 +33,7 @@ const { isPending, isError, error, isSuccess, mutate } = useMutation({
       title: 'Signup successful',
       description: 'You have successfully signed up.'
     })
+    isVerifying.value = true
   },
   onError: () => {
     toast({
@@ -79,16 +80,11 @@ const { value: email } = useField<string>('email')
 const { value: password } = useField<string>('password')
 
 const onSubmit = handleSubmit((values) => {
-  // mutate({
-  //   email: values.email,
-  //   password: values.password,
-  //   first_name: values.firstName,
-  //   last_name: values.lastName
-  // })
-  isVerifying.value = true
-  toast({
-    title: 'Verifying email',
-    description: 'Please wait while we verify your email address.'
+  mutate({
+    email: values.email,
+    password: values.password,
+    first_name: values.firstName,
+    last_name: values.lastName
   })
 })
 </script>
@@ -100,7 +96,6 @@ const onSubmit = handleSubmit((values) => {
       alt="login image"
       class="absolute inset-0 object-cover w-full h-full -z-10"
     />
-    <Toaster />
     <div class="flex items-center justify-center py-10">
       <form @submit.prevent="onSubmit">
         <Card v-if="!isVerifying" class="max-w-sm mx-auto md:min-w-[500px]">

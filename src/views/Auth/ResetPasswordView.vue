@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Toaster, useToast } from '@/components/ui/toast'
+import { useToast } from '@/components/ui/toast'
 
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
@@ -71,7 +71,6 @@ const onSubmit = handleSubmit((values) => {
       alt="login image"
       class="absolute inset-0 object-cover w-full h-full -z-10"
     />
-    <Toaster />
     <div class="flex items-center justify-center">
       <form @submit.prevent="onSubmit">
         <Card v-if="!passwordReset" class="max-w-sm md:min-w-[400px] mx-auto border-none">

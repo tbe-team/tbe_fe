@@ -9,6 +9,18 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
+      path: '/',
+      component: HomeLayout,
+      redirect: '/auth/login',
+      children: [
+        {
+          path: '',
+          name: 'Home',
+          component: () => import('@/views/HomeView.vue')
+        }
+      ]
+    },
+    {
       path: '/auth',
       component: FullLayout,
       redirect: '/login',
@@ -60,10 +72,10 @@ export function toLogin(path?: string): void {
   const userStore = useUserStore()
   userStore.logout()
   const currentPath = router.currentRoute.value.path
-  currentPath !== '/login' &&
+  currentPath !== '/auth/login' &&
     router.push({
-      path: '/login',
-      query: { to: path ? path : (currentPath ?? undefined) }
+      path: '/auth/login'
+      // query: { to: path ? path : (currentPath ?? undefined) }
     })
 }
 
