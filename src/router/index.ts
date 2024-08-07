@@ -1,8 +1,7 @@
 import { useUserStore } from '@/stores/userStore'
 import { createRouter, createWebHistory } from 'vue-router'
 
-const Layout = () => import('@/layouts/MainLayout.vue')
-const HomeLayout = () => import('@/layouts/HomeLayout.vue')
+const DashboardLayout = () => import('@/layouts/DashboardLayout.vue')
 const FullLayout = () => import('@/layouts/FullLayout.vue')
 
 const router = createRouter({
@@ -10,15 +9,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: HomeLayout,
-      redirect: '/auth/login',
-      children: [
-        {
-          path: '',
-          name: 'Home',
-          component: () => import('@/views/HomeView.vue')
-        }
-      ]
+      redirect: '/dashboard'
     },
     {
       path: '/auth',
@@ -31,37 +22,99 @@ const router = createRouter({
         {
           path: 'login',
           name: 'Login',
-          component: () => import('@/views/Auth/LoginView.vue')
+          component: () => import('@/views/auth/LoginView.vue')
         },
         {
           path: 'register',
           name: 'Register',
-          component: () => import('@/views/Auth/SignupView.vue')
+          component: () => import('@/views/auth/SignupView.vue')
         },
         {
           path: 'forgot-password',
           name: 'ForgotPassword',
-          component: () => import('@/views/Auth/ForgotPasswordView.vue')
+          component: () => import('@/views/auth/ForgotPasswordView.vue')
         },
         {
           path: 'reset-password',
           name: 'ResetPassword',
-          component: () => import('@/views/Auth/ResetPasswordView.vue')
+          component: () => import('@/views/auth/ResetPasswordView.vue')
         }
       ]
     },
     {
       path: '/dashboard',
-      component: Layout,
-      redirect: '/dashboard/overview',
+      name: 'Dashboard',
+      component: DashboardLayout,
+
+      meta: {
+        authRequired: true
+      },
+      children: [
+        {
+          path: '',
+          name: 'Empty',
+          component: () => import('@/views/dashboard/EmptyDashboard.vue')
+        }
+      ]
+    },
+    {
+      path: '/teams',
+      name: 'Teams',
+      component: DashboardLayout,
+      meta: {
+        authRequired: true
+      },
+      children: [
+        // {
+        //   path: '',
+        //   name: 'Teams',
+        //   component: () => import('@/views/teams/TeamsView.vue')
+        // }
+        {
+          path: ':id',
+          name: 'Team',
+          meta: {
+            subNav: 'navbarTeam'
+          },
+          component: () => import('@/views/team/TeamDashboard.vue')
+        }
+      ]
+    },
+    {
+      path: '/account',
+      name: 'Account',
+      component: DashboardLayout,
+      redirect: '/account/overview',
       meta: {
         authRequired: true
       },
       children: [
         {
           path: 'overview',
-          name: 'Overview',
-          component: () => import('@/views/OverviewView.vue')
+          name: 'AccountOverview',
+          meta: {
+            subNav: 'navbarAccount'
+          },
+          // component: () => import('@/components/ProfileSettingPage.vue')
+          component: () => import('@/views/account/accountSettings/AccountSettingsView.vue')
+        },
+        {
+          path: 'activity',
+          name: 'AccountActivity',
+          meta: {
+            subNav: 'navbarAccount'
+          },
+          // component: () => import('@/components/ProfileSettingPage.vue')
+          component: () => import('@/views/account/accountActivity/AccountActivityView.vue')
+        },
+        {
+          path: 'settings',
+          name: 'AccountSettings',
+          meta: {
+            subNav: 'navbarAccount'
+          },
+          // component: () => import('@/components/ProfileSettingPage.vue')
+          component: () => import('@/views/account/accountSettings/AccountSettingsView.vue')
         }
       ]
     }

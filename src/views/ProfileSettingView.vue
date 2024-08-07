@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import HomePage from '@/components/HomePage.vue'
+import ProfileSettingPage from '@/components/ProfileSettingPage.vue'
 </script>
 
 <template>
   <main class="flex flex-col w-full">
-    <HomePage />
+    <ProfileSettingPage />
   </main>
 </template>
